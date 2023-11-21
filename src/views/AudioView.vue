@@ -1,37 +1,40 @@
 <script setup lang="ts">
 import axios from 'axios';
 import { onMounted, ref, watch, type Ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import * as bootstrap from 'bootstrap';
 
 const route = useRoute();
+const router = useRouter();
 
 const audio: any = ref({});
 
 const explicit = ref(false);
 
+const hasConfirmed = ref(localStorage.getItem("hasConfirmed"));
+
 const getAudio = async () => {
   let url = `${import.meta.env.VITE_API_URL}/audio/${route.params.id}/`;
   const response = await axios.get(url);
   audio.value = response.data;
+  if (audio.value.explicit && !hasConfirmed.value) {
+    confirmationModal.show();
+  }
 };
 
 const confirmationModalElement: Ref<Element> = ref(document.createElement('div'));
 
 let confirmationModal: any = null;
 
-const showConfirmationModal = (event: Event) => {
-  const hasConfirmed = localStorage.getItem("hasConfirmed");
-  if (!hasConfirmed) {
-    confirmationModal.show();
-    return event.preventDefault();
-  }
-};
-
 const confirm = () => {
   confirmationModal.hide();
   localStorage.setItem('hasConfirmed', "true");
-  explicit.value = true;
+  hasConfirmed.value = "true";
+};
+
+const back = () => {
+  confirmationModal.hide();
+  router.push("/");
 };
 
 onMounted(() => {
@@ -43,7 +46,7 @@ watch(explicit, getAudio);
 
 <template>
   <main>
-    <div class="container mt-4">
+    <div class="container mt-4" v-if="audio.explicit && hasConfirmed">
       <div class="card my-4">
         <div class="card-body">
           <h5 class="card-title">{{ audio.name }}</h5>
@@ -66,7 +69,7 @@ watch(explicit, getAudio);
               age to view adult material.</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" @click="back">Close</button>
             <button type="button" class="btn btn-primary" @click="confirm">Continue</button>
           </div>
         </div>
