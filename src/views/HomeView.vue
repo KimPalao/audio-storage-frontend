@@ -3,7 +3,7 @@ import axios from 'axios';
 import { onMounted, ref, watch } from 'vue';
 import * as bootstrap from 'bootstrap';
 
-const audio = ref([]);
+const audio: any = ref([]);
 
 const explicit = ref(false);
 
@@ -18,7 +18,7 @@ const getAudio = async () => {
 
 const confirmationModalElement = ref(null);
 
-let confirmationModal = null;
+let confirmationModal: any = null;
 
 const showConfirmationModal = (event: Event) => {
   const hasConfirmed = localStorage.getItem("hasConfirmed");
