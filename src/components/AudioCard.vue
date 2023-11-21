@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-body">
-      <router-link class="card-title h5" v-if="link" :to="`/audio/${audio.id}`">{{ audio.name }}</router-link>
+      <router-link class="card-title h5" v-if="link" :to="`/audio/${audio.slug}`">{{ audio.name }}</router-link>
       <h5 class="card-title" v-else>{{ audio.name }}</h5>
       <p class="card-text">{{ audio.description }}</p>
       <audio controls :src="audio.file">

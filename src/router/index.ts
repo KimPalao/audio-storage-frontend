@@ -11,7 +11,7 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/audio/:id',
+      path: '/audio/:slug',
       name: 'audio',
       component: AudioView
     },

@@ -15,7 +15,7 @@ const explicit = ref(false);
 const hasConfirmed = ref(localStorage.getItem("hasConfirmed"));
 
 const getAudio = async () => {
-  let url = `${import.meta.env.VITE_API_URL}/audio/${route.params.id}/`;
+  let url = `${import.meta.env.VITE_API_URL}/audio/${route.params.slug}/`;
   const response = await axios.get(url);
   audio.value = response.data;
   if (audio.value.explicit && !hasConfirmed.value) {
