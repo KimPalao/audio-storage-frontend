@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import axios from 'axios';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, type Ref } from 'vue';
 import * as bootstrap from 'bootstrap';
 
 const audio: any = ref([]);
@@ -16,7 +16,7 @@ const getAudio = async () => {
   audio.value = response.data.results;
 };
 
-const confirmationModalElement = ref(null);
+const confirmationModalElement: Ref<Element> = ref(new Element());
 
 let confirmationModal: any = null;
 
