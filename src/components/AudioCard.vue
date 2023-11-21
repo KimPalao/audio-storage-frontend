@@ -7,12 +7,20 @@
       </audio>
     </div>
     <div class="card-footer text-end">
-      {{ audio.created_at }}
+      <em>
+        {{ format(audio.created_at) }}
+      </em>
     </div>
   </div>
 </template>
 <script setup lang="ts">
+import { DateTime } from 'luxon';
+
 defineProps<{
   audio: any;
 }>();
+
+const format = datetime => {
+  return DateTime.fromISO(datetime).toFormat('dd LLL y HH:mm:ss');
+};
 </script>
