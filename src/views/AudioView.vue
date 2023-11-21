@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import axios from 'axios';
 import { onMounted, ref, watch, type Ref } from 'vue';
+import { useRoute } from 'vue-router';
 import * as bootstrap from 'bootstrap';
-import { RouterLink } from 'vue-router';
 
-const audio: any = ref([]);
+const route = useRoute();
+
+const audio: any = ref({});
 
 const explicit = ref(false);
 
 const getAudio = async () => {
-  let url = `${import.meta.env.VITE_API_URL}/audio/`;
-  if (explicit.value) {
-    url += "?explicit";
-  }
+  let url = `${import.meta.env.VITE_API_URL}/audio/${route.params.id}/`;
   const response = await axios.get(url);
-  audio.value = response.data.results;
+  audio.value = response.data;
 };
 
 const confirmationModalElement: Ref<Element> = ref(document.createElement('div'));
@@ -45,21 +44,11 @@ watch(explicit, getAudio);
 <template>
   <main>
     <div class="container mt-4">
-      <div class="row justify-content-end mt-4">
-        <div class="col-auto">
-          <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="showExplicit" v-model="explicit"
-              @click="showConfirmationModal">
-            <label class="form-check-label" for="showExplicit">Show NSFW</label>
-          </div>
-
-        </div>
-      </div>
-      <div class="card my-4" v-for="file in audio" :key="file.id">
+      <div class="card my-4">
         <div class="card-body">
-          <router-link class="card-title h5" :to="`/audio/${file.id}`">{{ file.name }}</router-link>
-          <p class="card-text">{{ file.description }}</p>
-          <audio controls :src="file.file">
+          <h5 class="card-title">{{ audio.name }}</h5>
+          <p class="card-text">{{ audio.description }}</p>
+          <audio controls :src="audio.file">
           </audio>
         </div>
       </div>
