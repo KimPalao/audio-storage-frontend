@@ -1,7 +1,8 @@
 <template>
   <div class="card">
     <div class="card-body">
-      <h5 class="card-title">{{ audio.name }}</h5>
+      <router-link class="card-title h5" v-if="link" :to="`/audio/${audio.id}`">{{ audio.name }}</router-link>
+      <h5 class="card-title" v-else>{{ audio.name }}</h5>
       <p class="card-text">{{ audio.description }}</p>
       <audio controls :src="audio.file">
       </audio>
@@ -16,9 +17,14 @@
 <script setup lang="ts">
 import { DateTime } from 'luxon';
 
-defineProps<{
+export interface Props {
   audio: any;
-}>();
+  link?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  link: () => false
+});
 
 const format = (datetime: string) => {
   return DateTime.fromISO(datetime).toFormat('dd LLL y HH:mm:ss');

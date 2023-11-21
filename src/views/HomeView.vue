@@ -57,7 +57,7 @@ watch(explicit, getAudio);
         </div>
       </div>
       <div class="card my-4" v-for="file in audio" :key="file.id">
-        <audio-card :audio="file"></audio-card>
+        <audio-card :audio="file" link></audio-card>
       </div>
     </div>
 
