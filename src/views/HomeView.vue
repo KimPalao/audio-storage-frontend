@@ -16,7 +16,7 @@ const getAudio = async () => {
   audio.value = response.data.results;
 };
 
-const confirmationModalElement: Ref<Element> = ref(new Element());
+const confirmationModalElement: Ref<Element> = ref(document.createElement('div'));
 
 let confirmationModal: any = null;
 
