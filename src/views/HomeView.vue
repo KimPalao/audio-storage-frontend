@@ -3,6 +3,7 @@ import axios from 'axios';
 import { onMounted, ref, watch, type Ref } from 'vue';
 import * as bootstrap from 'bootstrap';
 import { RouterLink } from 'vue-router';
+import AudioCard from '@/components/AudioCard.vue';
 
 const audio: any = ref([]);
 
@@ -56,12 +57,7 @@ watch(explicit, getAudio);
         </div>
       </div>
       <div class="card my-4" v-for="file in audio" :key="file.id">
-        <div class="card-body">
-          <router-link class="card-title h5" :to="`/audio/${file.id}`">{{ file.name }}</router-link>
-          <p class="card-text">{{ file.description }}</p>
-          <audio controls :src="file.file">
-          </audio>
-        </div>
+        <audio-card :audio="file"></audio-card>
       </div>
     </div>
 

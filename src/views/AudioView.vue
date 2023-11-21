@@ -3,6 +3,7 @@ import axios from 'axios';
 import { onMounted, ref, watch, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import * as bootstrap from 'bootstrap';
+import AudioCard from '@/components/AudioCard.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -46,15 +47,8 @@ watch(explicit, getAudio);
 
 <template>
   <main>
-    <div class="container mt-4" v-if="audio.explicit && hasConfirmed">
-      <div class="card my-4">
-        <div class="card-body">
-          <h5 class="card-title">{{ audio.name }}</h5>
-          <p class="card-text">{{ audio.description }}</p>
-          <audio controls :src="audio.file">
-          </audio>
-        </div>
-      </div>
+    <div class="container mt-4" v-if="!audio.explicit || (audio.explicit && hasConfirmed)">
+      <audio-card :audio="audio"></audio-card>
     </div>
 
     <div class="modal" tabindex="-1" ref="confirmationModalElement">
