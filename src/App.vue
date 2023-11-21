@@ -4,6 +4,15 @@ import HelloWorld from './components/HelloWorld.vue';
 </script>
 
 <template>
+  <header>
+    <div class="container pt-4">
+      <nav>
+        <router-link to="/" class="brand-link">
+          <h1>Audio</h1>
+        </router-link>
+      </nav>
+    </div>
+  </header>
   <RouterView />
   <footer>
     Kim Palao
