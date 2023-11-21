@@ -20,7 +20,7 @@ defineProps<{
   audio: any;
 }>();
 
-const format = datetime => {
+const format = (datetime: string) => {
   return DateTime.fromISO(datetime).toFormat('dd LLL y HH:mm:ss');
 };
 </script>
