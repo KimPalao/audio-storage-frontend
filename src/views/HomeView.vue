@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import axios from 'axios';
 import { onMounted, ref, watch } from 'vue';
+import * as bootstrap from 'bootstrap';
 
 const audio = ref([]);
 
@@ -15,7 +16,28 @@ const getAudio = async () => {
   audio.value = response.data.results;
 };
 
-onMounted(getAudio);
+const confirmationModalElement = ref(null);
+
+let confirmationModal = null;
+
+const showConfirmationModal = (event: Event) => {
+  const hasConfirmed = localStorage.getItem("hasConfirmed");
+  if (!hasConfirmed) {
+    confirmationModal.show();
+    return event.preventDefault();
+  }
+};
+
+const confirm = () => {
+  confirmationModal.hide();
+  localStorage.setItem('hasConfirmed', "true");
+  explicit.value = true;
+};
+
+onMounted(() => {
+  getAudio();
+  confirmationModal = new bootstrap.Modal(confirmationModalElement.value);
+});
 watch(explicit, getAudio);
 </script>
 
@@ -25,7 +47,8 @@ watch(explicit, getAudio);
       <div class="row justify-content-end mt-4">
         <div class="col-auto">
           <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="showExplicit" v-model="explicit">
+            <input class="form-check-input" type="checkbox" role="switch" id="showExplicit" v-model="explicit"
+              @click="showConfirmationModal">
             <label class="form-check-label" for="showExplicit">Show NSFW</label>
           </div>
 
@@ -40,6 +63,26 @@ watch(explicit, getAudio);
         </div>
       </div>
     </div>
+
+    <div class="modal" tabindex="-1" ref="confirmationModalElement">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirm</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Toggling this setting will display adult content. By clicking continue, you confirm that you are of legal
+              age to view adult material.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" @click="confirm">Continue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main>
 </template>
 <style>
